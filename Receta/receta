@@ -1,0 +1,109 @@
+------- Recetario para Realizar el Proyecto ----
+
+- Necesitaremos un IDE en nuestro caso Java Mars EE
+link:  https://eclipse.org/downloads/
+
+- instalamos el IDE y vamos a adicionar la tecnología MAVEN
+para ello en nuestro IDE en la pestaña de HELP elegimos la opción ECLIPSE MARKET PLACE
+a continuación filtramos por la palabra MAVEN
+y seleccionamos  " MAVEN Integration for Eclipse " 
+lo instalamos.
+
+- Crear Proyecto Maven
+Para crear un proyecto maven de Hola mundo te dejo un tutorial que explica perfectamente
+que es Maven y como crear nuestro primer Proyecto.
+
+Link:   https://www.youtube.com/watch?v=BuQs0Xg4JcU      Herramientas MAVEN -  Javi Moreno
+
+- Conectar Nuestro IDE con GITHUB
+-- Primero debemos crear nuestra cuenta de GITHUB en : https://github.com/
+	Creamos el repositorio en el botón de NEW (el verde)  
+	Asignamos un nombre al Repositorio y a continuación una descripción opcional
+	seleccionamos el repositorio como publico ó privado.
+	clic en el boton Crear.
+	
+	A continuación obtenemos el Link HTTP de nuestro repositorio, lo copiamos.
+	
+	regresamos a nuestro IDE y del lado derecho podemos observar toda la estructura del proyecto Maven creado
+	hacemos un clic derecho sobre la carpeta del proyecto, nos dirigimos al menú TEAM (EQUIPO EN ESPAÑOL)
+	seleccionamos  la opción SHARE PROYECT.
+	y creamos nuestro repositorio GIT Local (eclipse trae por defecto GIT) en el boton Create
+	seleccionamos la opción Finalizar y eclipse se encarga de enviar nuestro proyeco a el repositorio Local.
+-	Ahora lo enviaremos a nuestro repositorio de GITHUB, de nuevo hacemos clic derecho y en el menú de TEAM
+	seleccionamos la opción REPOSITORY y luego PUSH TO UP STREAM,
+	a continuación configuramos nuestro repositorio Pegando la URL de nuestro Repositorio en GITHUB (la que copiamos)
+	y seguidamente agregamos las credenciales de autenticación y presionamos finalizar.
+	
+-- Hacer push a nuestro Repositorio en GITHUB
+  Seleccionamos el proyecto, le damos un clic derecho y en el menú de team la opción COMIT
+  agregamos un comentario de comit para recordar el motivo del push, seleccionarmos el boton COMIT AND PUSH y a continuación eclipse envía nuestros archivos
+  al repositorio en GITHUB.
+
+--** Crear Nuestro Servidor de Integración Continua.
+  Creamos nuestra cuenta gratuita en la página de CodeShip:    https://codeship.com/
+  
+  Seleccionamos  Crear nuevo Proyecto (Create a New Proyect el botón Verde)  y seleccionamos el servicio que deseamos utilizar
+  en nuestro caso utilizaremos GITHUB, al seleccionarlo necesitamos ingresar la URL de nuestro repositorio, y seleccionamos el boton CONECT.
+
+-- Configurando nuestro Servidor de Integración
+   Una vez conectado nuestro repositorio debemos configurar los comandos que va a ejecutar nuestro servidor al momento de realizar cambios en el código
+   Codeship integra automaticamente instrucciones para algunos lenguajes, en nuestro caso seleccionamos  JAVA
+   y observarmos como CODESHIP agrega automaticamente comandos para ejecutar el servicio, guardamos los comandos y continuamos
+   
+--- Hacer un push para comprobar las configuraciónes  
+    CODESHIP nos solicita hacer un Push para realizar el primer Debug de nuestro repositorio, hacemos un cambio en nuestro código y a continuación
+    hacemos el Push para comprobar que efectivamente CODESHIP ya esta escuchando el Repositorio de GITHUB para compilar los cambios realizados.
+    si todos los comandos se ejecutan correctamente CODESHIP nos muestra un estado de completado (en verde) y nos lleva a los siguientes pasos.
+    
+-- ******  Crear nuestro servidor de Entrega Continua
+    CODESHIP nos muestra un menú de What's next? en la parte superior de la página, seleccionamos el "Set up Continuous Deployment" (icono de una nube)
+    y a continuación nos muestra una ventana para configurar el BRANCH de nuestro repositorio al que deseamos configurar el Servidor de entrega continua,
+    agregamos el nombre del BRANCH y continuamos, CODESHIP nos muestra una lista de servidores con los cuales puede trabajar.
+    
+    En nuestro caso utilizaremos HEROKU, lo selecciónamos y nos muestra el menú de configuración, lo dejamos pendiente de momento y vamos a crear el servidor de entrega
+    
+    ---  ---- LINK:  https://www.heroku.com/
+    
+    Nos registramos y accedemos a la sección DASHBOARD,  a continuación seleccionamos Crear un Nuevo proyecto en el Boton NEW
+    Create New APP,  Nombramos la aplicación, verificamos que el nombre de la App este disponible y seleccionamos la región o la dejamos por default,
+    seleccionamos el boton "Create APP" y a continuación nos muestra nuestra aplicación,  en el menú Settings podemos observar las propiedades.
+    
+    Regresamos a CODESHIP y agregamos el nombre de la APP creada en HEROKU
+    Lo siguiente es agregar nuestra HEROKU APPI KEY, para lo cual seleccionamos el link que nos proporciona CODESHIP y nos redirecciona al panel nuestra cuenta en HEROKU
+    buscamos en la parte inferior el boton SHOW API KEY y lo seleccionamos, ingresamos nuestra contraseña y nos muestra nuestra API KEY, la copiamos
+    y la pegamos en CODESHIP.
+    Seleccionamos More Options y se despliegan las opciones adicionales como lo es la URL de la aplicación, dejaremos que HEROKU se encargue de ella
+    así que no ingresamos nada de momento, unicamente activamos la opción FORCE TO PUSH y CHECK APP URL.
+    
+    Guardamos nuestra configuración y con esto ya tenesmos nuestro servidor de entrega continua configurado.
+    
+------****** VERIFICAR 
+    Listo unicamente debemos hacer un push para verificar que todo funcione correctamente.
+    
+----- **** MODIFICAR COMMANDS EN CODESHIP
+    para modificar los comandos en codeship debemos seleccionar las propiedades del proyecto de CODESHIP CREADO 
+    y en la seción de Setup Commands escribimos los comandos que necesitamos que se ejecuten, aca dejo algunos de lo que yo utilize en mi proyecto.
+    
+    mvn compile               ----  Compila el Proyecto MAVEN
+    mvn test                  ----  Ejecuta los TEST de MAVEn con JUNIT
+    mvn install               ----  Instala MAVEN en nuestra maquina virtual
+    mvn package               ----  Empaqueta nuestro proyecto en un .War 
+    heroku plugins:install https://github.com/heroku/heroku-deploy      ---- Instala El Heroku Deploy en nuestro Servidor
+    mvn org.apache.maven.plugins:maven-compiler-plugin:2.0.2:compile    ---- Complila el Plugin de MAVEN en el servidor
+    
+    
+*** Adjunto el Link de Mi video en Youtube para que puedas Revisar. espero te sea de ayuda.
+
+**** LINK :   https://www.youtube.com/watch?v=X5c358VjFVA
+
+UMG Jalapa 2016
+Ingeniería del Software
+Ing. Cesar Hernandez
+
+Jorge Iván Martínez.
+    
+    
+    
+    
+  
+	
